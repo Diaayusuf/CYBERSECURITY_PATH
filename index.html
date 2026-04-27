@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CyberSentinel | Red Matrix Security Nexus</title>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0508;
+            font-family: 'Inter', sans-serif;
+            color: #f0e6ea;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* RED / CRIMSON DARK THEME - Unique Hacker Vibe */
+        :root {
+            --glow-red: #ff2a2a;
+            --glow-shadow: 0 0 8px #ff0000aa, 0 0 15px #ff3300aa;
+            --border-red: rgba(255, 30, 30, 0.6);
+            --card-bg: rgba(18, 6, 10, 0.82);
+        }
+
+        /* MATRIX RED VERSION background canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        /* SIDEBAR MENU (fixed left) */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: rgba(8, 2, 5, 0.95);
+            backdrop-filter: blur(12px);
+            border-right: 2px solid var(--glow-red);
+            z-index: 1000;
+            padding: 30px 20px;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            box-shadow: 5px 0 25px rgba(255, 0, 0, 0.2);
+        }
+
+        .sidebar h2 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.6rem;
+            text-align: center;
+            color: #ff4646;
+            border-bottom: 1px solid #ff3a3a;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li {
+            margin: 18px 0;
+        }
+
+        .sidebar nav ul li a {
+            color: #ffbcbc;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 8px 15px;
+            border-radius: 40px;
+            transition: all 0.25s;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .sidebar nav ul li a i {
+            width: 28px;
+            font-size: 1.3rem;
+            color: #ff5e5e;
+        }
+
+        .sidebar nav ul li a:hover {
+            background: #ff1a1a30;
+            box-shadow: 0 0 10px #ff0000;
+            transform: translateX(6px);
+            color: #fff;
+        }
+
+        /* Main content area with left margin */
+        .main-content {
+            margin-left: 280px;
+            transition: margin 0.3s;
+        }
+
+        /* Glowing effects and cards */
+        .cyber-glow {
+            text-shadow: 0 0 4px #ff3a3a, 0 0 8px #ff0000;
+        }
+
+        h1, h2, h3, .mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        h2 {
+            font-size: 2.4rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            border-left: 6px solid #ff3a3a;
+            padding-left: 20px;
+            color: #ffdede;
+        }
+
+        .section {
+            padding: 80px 5%;
+            position: relative;
+            z-index: 2;
+            border-bottom: 1px solid rgba(255, 40, 40, 0.2);
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Cards grid - neon red */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--border-red);
+            border-radius: 28px;
+            padding: 1.8rem;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 12px 25px -8px rgba(0,0,0,0.7);
+        }
+
+        .card:hover {
+            transform: scale(1.02) translateY(-6px);
+            border-color: #ff4d4d;
+            box-shadow: 0 0 25px #ff1a1a, 0 15px 30px -5px black;
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            color: #ff4d4d;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 4px #ff0000);
+        }
+
+        .card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 0.5rem;
+            color: #ffb7b7;
+        }
+
+        .card p {
+            color: #d9c2ca;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            margin: 8px 0;
+        }
+
+        .ppt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #1f0a0f;
+            border: 1px solid #ff3a3a;
+            padding: 8px 18px;
+            margin-top: 18px;
+            font-weight: bold;
+            border-radius: 40px;
+            color: #ff9e9e;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        .ppt-btn:hover {
+            background: #ff1a1a30;
+            box-shadow: 0 0 12px #ff3a3a;
+            color: #fff;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            background: linear-gradient(135deg, #ff4d4d, #b30000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .typing-text {
+            font-size: 1.8rem;
+            border-right: 3px solid #ff3a3a;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            animation: typing 3s steps(30, end) forwards, blink 0.7s step-end infinite;
+            margin: 20px auto;
+            display: inline-block;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            0%, 100% { border-color: #ff3a3a; }
+            50% { border-color: transparent; }
+        }
+
+        .vis-diagram, .tool-preview {
+            background: #11080c;
+            border-radius: 12px;
+            padding: 6px 10px;
+            margin: 12px 0;
+            font-family: monospace;
+            font-size: 0.7rem;
+            border-left: 4px solid #ff3a3a;
+            color: #ffbfbf;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #ff3a3a55;
+            font-size: 0.8rem;
+            background: #02000150;
+        }
+
+        /* responsive: sidebar collapse on mobile */
+        @media (max-width: 850px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+                z-index: 1100;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1200;
+                background: #b30000;
+                padding: 12px;
+                border-radius: 30px;
+                color: white;
+                font-size: 1.4rem;
+                cursor: pointer;
+                border: 1px solid red;
+            }
+            .hero h1 { font-size: 2.4rem; }
+            .typing-text { font-size: 1rem; white-space: normal; width: auto; border-right: none; animation: none; }
+        }
+        .menu-toggle {
+            display: none;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1a0505; }
+        ::-webkit-scrollbar-thumb { background: #ff3a3a; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+<div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i> MENU</div>
+
+<!-- SIDEBAR NAVIGATION -->
+<div class="sidebar" id="sidebar">
+    <h2><i class="fas fa-skull"></i> CYBER<span style="color:#ff6f6f;">SENTINEL</span></h2>
+    <nav>
+        <ul>
+            <li><a href="#home"><i class="fas fa-home"></i> Home / Nexus</a></li>
+            <li><a href="#crypto"><i class="fas fa-lock"></i> Cryptography</a></li>
+            <li><a href="#network"><i class="fas fa-network-wired"></i> Network Security</a></li>
+            <li><a href="#malware"><i class="fas fa-bug"></i> Malware & Threats</a></li>
+            <li><a href="#auth"><i class="fas fa-id-card"></i> Authentication</a></li>
+            <li><a href="#ethical"><i class="fas fa-user-secret"></i> Ethical Hacking</a></li>
+            <li><a href="#tools"><i class="fas fa-tools"></i> Security Tools</a></li>
+            <li><a href="#books"><i class="fas fa-book-open"></i> Books Library</a></li>
+            <li><a href="#cheatsheets"><i class="fas fa-scroll"></i> Cheat Sheets</a></li>
+            <li><a href="#certs"><i class="fas fa-certificate"></i> Certifications</a></li>
+        </ul>
+    </nav>
+    <div style="margin-top: 40px; text-align: center; font-size: 0.7rem; border-top: 1px solid red; padding-top: 20px;">
+        <i class="fas fa-shield-haltered"></i> Red Team Intel
+    </div>
+</div>
+
+<div class="main-content" id="mainContent">
+    <!-- HERO / HOME SECTION (with articles) -->
+    <section class="hero" id="home" data-aos="fade-up">
+        <div class="container">
+            <h1>🔥 RED MATRIX SECURITY 🔥</h1>
+            <div style="display: flex; justify-content: center;">
+                <div class="typing-text">Cybersecurity is the future</div>
+            </div>
+            <p style="margin-top: 25px;margin-left: 155px; max-width: 700px; background: #1a080c80; padding: 15px; border-radius: 30px;">Offensive mindset | Crimson protocols | Zero-trust ready</p>
+        </div>
+    </section>
+
+    <!-- ARTICLES / INFORMATION SECTION (unique red info cards) -->
+    <section class="section" data-aos="fade-up">
+        <div class="container">
+            <h2> Latest Cyber Intel & Articles</h2>
+            <div class="cards-grid" id="articles-grid"></div>
+        </div>
+    </section>
+
+    <!-- REST OF SECTIONS (dynamic created) -->
+    <section class="section" id="crypto" data-aos="fade-up"><div class="container"><h2> Cryptography</h2><div class="cards-grid" id="crypto-cards"></div></div></section>
+    <section class="section" id="network" data-aos="fade-up"><div class="container"><h2> Network Security</h2><div class="cards-grid" id="network-cards"></div></div></section>
+    <section class="section" id="malware" data-aos="fade-up"><div class="container"><h2> Malware & Threats</h2><div class="cards-grid" id="malware-cards"></div></div></section>
+    <section class="section" id="auth" data-aos="fade-up"><div class="container"><h2> Authentication</h2><div class="cards-grid" id="auth-cards"></div></div></section>
+    <section class="section" id="ethical" data-aos="fade-up"><div class="container"><h2> Ethical Hacking</h2><div class="cards-grid" id="ethical-cards"></div></div></section>
+    <section class="section" id="tools" data-aos="fade-up"><div class="container"><h2> Security Tools</h2><div class="cards-grid" id="tools-cards"></div></div></section>
+    <section class="section" id="books" data-aos="fade-up"><div class="container"><h2> Books</h2><div class="cards-grid" id="books-cards"></div></div></section>
+    <section class="section" id="cheatsheets" data-aos="fade-up"><div class="container"><h2> Cheat Sheets</h2><div class="cards-grid" id="cheat-cards"></div></div></section>
+    <section class="section" id="certs" data-aos="fade-up"><div class="container"><h2> Certifications</h2><div class="cards-grid" id="certs-cards"></div></div></section>
+    <footer> RED CYBERFORGE | Dark Crimson Edition | Downloadable PPTs for every topic (simulated slides 8-10) </footer>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 700, once: false, mirror: false });
+    
+    // RED MATRIX BACKGROUND (crimson digits)
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const chars = "01xX#%&$REDH4CK!@#$%^&*()_+{}:<>>~";
+    const fontSize = 18;
+    let columns = canvas.width / fontSize;
+    let drops = Array(Math.floor(columns)).fill(1);
+    
+    function drawRedMatrix() {
+        ctx.fillStyle = "rgba(8, 1, 3, 0.06)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ff3a3a";
+        ctx.font = fontSize + "px 'Share Tech Mono'";
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }
+    setInterval(drawRedMatrix, 55);
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = canvas.width / fontSize;
+        drops = Array(Math.floor(columns)).fill(1);
+    });
+    
+    // PPT generator (fake but functional download)
+    function downloadPPT(topicName, category) {
+        let content = `🔥 CYBERSENTINEL PRESENTATION: ${topicName} (${category})\n🔴 SLIDES: 8-10 structure\n\n`;
+        for (let i = 1; i <= 9; i++) {
+            if(i===1) content += `Slide ${i}: TITLE - ${topicName} Red Team Edition\n`;
+            else if(i===2) content += `Slide ${i}: Core Definition & Attack Vectors\n`;
+            else if(i===3) content += `Slide ${i}: Technical Workflow (ASCII Diagram)\n`;
+            else if(i===4) content += `Slide ${i}: Real-World Breach Example\n`;
+            else if(i===5) content += `Slide ${i}: Advantages & Risks (Red Hat Analysis)\n`;
+            else if(i===6) content += `Slide ${i}: Countermeasures & Mitigation\n`;
+            else if(i===7) content += `Slide ${i}: Industry Use Cases (Fortune 500)\n`;
+            else if(i===8) content += `Slide ${i}: Future Trends & Zero-day Insights\n`;
+            else content += `Slide ${i}: Conclusion + References\n`;
+        }
+        const blob = new Blob([content], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${topicName.replace(/\s/g, '_')}_${category}.ppt`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+    
+    function createCard(icon, title, descLines, extraHtml, pptTopic, category) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        let descHtml = Array.isArray(descLines) ? descLines.map(l => `<p>${l}</p>`).join('') : `<p>${descLines}</p>`;
+        card.innerHTML = `
+            <div class="card-icon"><i class="${icon}"></i></div>
+            <h3>${title}</h3>
+            ${descHtml}
+            ${extraHtml || ''}
+            <div class="ppt-btn" data-tpp="${title}"><i class="fas fa-download"></i> View Presentation (PPT)</div>
+        `;
+        const btn = card.querySelector('.ppt-btn');
+        btn.addEventListener('click', () => downloadPPT(pptTopic || title, category));
+        return card;
+    }
+    
+    // ARTICLES (home section cyber news)
+    const articles = [
+        { icon: "fas fa-shield-virus", title: "Ransomware Surge 2025", desc: "New polymorphic variants evade EDR — learn defense strategies." },
+        { icon: "fas fa-eye", title: "AI in Offensive Security", desc: "LLM-driven social engineering and automated payloads on rise." },
+        { icon: "fas fa-database", title: "Cloud Misconfiguration", desc: "S3 leaks & IAM flaws: 80% of breaches involve misconfig." },
+        { icon: "fas fa-chart-line", title: "Zero Trust Architecture", desc: "Implementation challenges & micro-segmentation success." }
+    ];
+    const artGrid = document.getElementById('articles-grid');
+    articles.forEach(art => {
+        artGrid.appendChild(createCard(art.icon, art.title, [art.desc], "", art.title, "CyberIntel"));
+    });
+    
+    // -------- POPULATE ALL SECTIONS (red theme) -------
+    // CRYPTO
+    const cryptoTopics = [
+        { icon: "fas fa-key", title: "AES Encryption", desc: ["Symmetric 256-bit, NIST approved.", "Real-world: VPN, Disk encryption."] },
+        { icon: "fas fa-key", title: "DES Encryption", desc: ["Legacy 56-bit, broken by brute-force.", "Historical significance."] },
+        { icon: "fas fa-calculator", title: "RSA Algorithm", desc: ["Asymmetric, factoring primes.", "HTTPS, digital signatures."] },
+        { icon: "fas fa-fingerprint", title: "Hash Functions (MD5,SHA)", desc: ["Integrity checks, password hashing.", "MD5 deprecated, SHA-256 standard."] }
+    ];
+    const cryptoCont = document.getElementById('crypto-cards');
+    cryptoTopics.forEach(t => cryptoCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Cryptography")));
+    
+    // NETWORK
+    const netTopics = [
+        { icon: "fas fa-shield-alt", title: "Firewalls", desc: ["Filter traffic, stateful inspection.", "Diagram: Internet → FW → LAN"], diag: " [Firewall] ruleset active" },
+        { icon: "fas fa-eye", title: "IDS (Intrusion Detection)", desc: ["Signature/anomaly alerts.", "Diagram: Traffic → IDS → Logs"], diag: " alerts on suspicious patterns" },
+        { icon: "fas fa-laptop-code", title: "VPN", desc: ["Encrypted tunnels, remote access.", "Hide IP, secure comms"], diag: " [Client] === Tunnel === [VPN GW]" },
+        { icon: "fas fa-snooze", title: "Packet Sniffing", desc: ["Capture packets (Wireshark).", "Passive recon or MITM."], diag: " NIC promiscuous mode" }
+    ];
+    const netCont = document.getElementById('network-cards');
+    netTopics.forEach(t => netCont.appendChild(createCard(t.icon, t.title, t.desc, `<div class="vis-diagram"><i class="fas fa-chart-simple"></i> ${t.diag}</div>`, t.title, "NetworkSec")));
+    
+    // MALWARE
+    const malTopics = [
+        { icon: "fas fa-virus", title: "Viruses", desc: ["Attack: attaches to executables.", "Prevent: AV, code signing."] },
+        { icon: "fas fa-worm", title: "Worms", desc: ["Self-spreads via network.", "Prevent: patching, segmentation."] },
+        { icon: "fas fa-user-secret", title: "Trojans", desc: ["Disguised as legit software.", "Prevent: app vetting, EDR."] },
+        { icon: "fas fa-microchip", title: "Rootkits", desc: ["OS-level stealth persistence.", "Prevent: secure boot, monitoring."] }
+    ];
+    const malCont = document.getElementById('malware-cards');
+    malTopics.forEach(t => malCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Malware")));
+    
+    // AUTH
+    const authTopics = [
+        { icon: "fas fa-key", title: "Password Security", desc: ["Hashing + salt", "Risks: reuse, brute-force."] },
+        { icon: "fas fa-mobile-alt", title: "Multi-Factor Auth", desc: ["Password + TOTP/biometric", "SIM swap risk"] },
+        { icon: "fas fa-token", title: "JWT", desc: ["Stateless tokens", "Risks: weak secret, XSS"] },
+        { icon: "fas fa-cookie", title: "Session Auth", desc: ["Cookie-based", "Risks: CSRF, fixation"] }
+    ];
+    const authCont = document.getElementById('auth-cards');
+    authTopics.forEach(t => authCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Auth")));
+    
+    // ETHICAL
+    const ethTopics = [
+        { icon: "fas fa-dice-d6", title: "Penetration Testing", desc: ["Simulate attack, find flaws.", "Defense: patch & retest"] },
+        { icon: "fas fa-users", title: "Social Engineering", desc: ["Phishing, baiting.", "Defense: training, MFA"] },
+        { icon: "fas fa-database", title: "SQL Injection", desc: ["' OR 1=1; -- ", "Defense: param queries, WAF"] },
+        { icon: "fas fa-code", title: "XSS", desc: ["Inject scripts, steal cookies.", "Defense: CSP, output encode"] }
+    ];
+    const ethCont = document.getElementById('ethical-cards');
+    ethTopics.forEach(t => ethCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Ethical")));
+    
+    // TOOLS
+    const toolsData = [
+        { icon: "fas fa-chart-line", title: "Wireshark", desc: ["Packet capture & analysis.", "Filters: tcp.port==443"], preview: " Capture → Follow TCP Stream" },
+        { icon: "fas fa-skull-crossbones", title: "Metasploit", desc: ["Exploit dev framework.", "msfconsole payloads"], preview: "use exploit/windows/smb/ms17_010" },
+        { icon: "fas fa-map", title: "Nmap", desc: ["Port scanning, OS detection.", "nmap -sV -p- target"], preview: " SYN scan, version detection" },
+        { icon: "fas fa-bug", title: "Burp Suite", desc: ["Web proxy & scanner.", "Repeater, Intruder"], preview: "Intercept → fuzz → analyze" }
+    ];
+    const toolCont = document.getElementById('tools-cards');
+    toolsData.forEach(t => toolCont.appendChild(createCard(t.icon, t.title, t.desc, `<div class="tool-preview"><i class="fas fa-terminal"></i> ${t.preview}</div>`, t.title, "Tools")));
+    
+    // BOOKS
+    const books = [
+        { title: "Red Team Field Manual", desc: "Tactical reference.", icon: "fas fa-book" },
+        { title: "The Web App Hacker's Handbook", desc: "Web exploitation.", icon: "fas fa-globe" },
+        { title: "Metasploit: Guide", desc: "Pentesting.", icon: "fas fa-rocket" },
+        { title: "Practical Binary Analysis", desc: "Reverse engineering.", icon: "fas fa-microscope" },
+        { title: "Hacking: Art of Exploitation", desc: "Low-level hacking.", icon: "fas fa-code" },
+        { title: "Applied Cryptography", desc: "Protocols deep dive.", icon: "fas fa-lock" }
+    ];
+    const bookCont = document.getElementById('books-cards');
+    books.forEach(b => bookCont.appendChild(createCard(b.icon, b.title, [b.desc], "", b.title, "Books")));
+    
+    // CHEAT SHEETS (with PDF)
+    function downloadPDFCheat(title, content) {
+        const txtData = `🔴 CYBER CHEAT SHEET 🔴\n${title}\n\n${content}\n--- RedTeam Reference ---`;
+        const blob = new Blob([txtData], { type: "application/pdf" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${title.replace(/\s/g,'_')}_cheatsheet.pdf`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+    const cheatItems = [
+        { title: "Linux Red Team Commands", content: "ps aux, netstat -tulpn, ss -lntp, chmod 777, tcpdump", icon: "fab fa-linux" },
+        { title: "Nmap Pro Scan", content: "nmap -sS -sV -p- -T4 target, -sC default scripts", icon: "fas fa-map-marked-alt" },
+        { title: "Wireshark Red Filters", content: "http.request, tls.handshake, ip.src==192.168.1.0/24", icon: "fas fa-filter" },
+        { title: "SQLi Payloads", content: "' OR '1'='1'; -- , UNION SELECT null,user(),3", icon: "fas fa-database" }
+    ];
+    const cheatCont = document.getElementById('cheat-cards');
+    cheatItems.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<div class="card-icon"><i class="${c.icon}"></i></div><h3>${c.title}</h3><p>Quick reference: ${c.content.substring(0, 70)}...</p><div class="ppt-btn cheat-dl"><i class="fas fa-file-pdf"></i> Download PDF (CheatSheet)</div>`;
+        const btn = card.querySelector('.cheat-dl');
+        btn.addEventListener('click', () => downloadPDFCheat(c.title, c.content));
+        cheatCont.appendChild(card);
+    });
+    
+    // CERTIFICATIONS
+    const certsList = [
+        { name: "CEH v12", level: "Intermediate", value: "Recognized red team entry", icon: "fas fa-hackerrank" },
+        { name: "CompTIA Security+", level: "Fundamental", value: "DoD baseline", icon: "fas fa-shield" },
+        { name: "OSCP", level: "Advanced", value: "Elite practical cert", icon: "fas fa-skull" },
+        { name: "CISSP", level: "Expert", value: "Management & architecture", icon: "fas fa-crown" }
+    ];
+    const certCont = document.getElementById('certs-cards');
+    certsList.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<div class="card-icon"><i class="${c.icon}"></i></div><h3>${c.name}</h3><p>Difficulty: ${c.level}</p><p>Career: ${c.value}</p><div class="ppt-btn cert-dl"><i class="fas fa-download"></i> Download PPT (Cert Pack)</div>`;
+        card.querySelector('.cert-dl').addEventListener('click', () => downloadPPT(c.name, "Certification"));
+        certCont.appendChild(card);
+    });
+    
+    // Sidebar mobile toggle
+    const toggleBtn = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+    document.querySelectorAll('.sidebar nav ul li a').forEach(link => {
+        link.addEventListener('click', () => {
+            if(window.innerWidth <= 850) sidebar.classList.remove('open');
+        });
+    });
+</script>
+</body>
+</html>
