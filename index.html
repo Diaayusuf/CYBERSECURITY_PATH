@@ -4,726 +4,720 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>NULL HACKERS</title>
-    <!-- Google Fonts & Icons -->
     <link rel="icon" href="image/LOGO-removebg-preview.png" type="image/jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- AOS Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{
+            --red:#ff2a2a;
+            --red-dim:rgba(255,42,42,0.6);
+            --bg:#0a0508;
+            --card-bg:rgba(18,6,10,0.85);
+            --text:#f0e6ea;
+        }
+        body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--text);overflow-x:hidden;scroll-behavior:smooth;}
+
+        /* MATRIX */
+        #matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.3;pointer-events:none;}
+
+        /* ======= TOP NAV ======= */
+        .topnav{
+            position:fixed;top:0;left:0;right:0;z-index:2000;
+            background:rgba(6,1,4,0.97);
+            border-bottom:2px solid var(--red);
+            display:flex;align-items:center;justify-content:space-between;
+            padding:0 20px;
+            height:58px;
+            box-shadow:0 2px 20px rgba(255,0,0,0.2);
+            font-family:'Share Tech Mono',monospace;
+        }
+        .topnav-logo img{height:36px;filter:drop-shadow(0 0 5px rgba(255,42,42,0.5));}
+        .topnav-menu-btn{
+            display:flex;align-items:center;gap:8px;
+            background:transparent;border:1px solid var(--red-dim);
+            color:#ff9e9e;padding:7px 18px;border-radius:8px;
+            cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.9rem;
+            transition:0.2s;
+        }
+        .topnav-menu-btn:hover,.topnav-menu-btn.active{background:#ff2a2a20;color:#fff;border-color:var(--red);}
+        .topnav-menu-btn i{font-size:1rem;color:var(--red);transition:transform 0.3s;}
+        .topnav-menu-btn.active i{transform:rotate(90deg);}
+
+        /* DROPDOWN PANEL — slides from top, max half screen */
+        .nav-dropdown{
+            position:fixed;
+            top:58px;left:50%;
+            transform:translateX(-50%) translateY(-10px);
+            width:min(96vw,480px);
+            max-height:0;
+            overflow:hidden;
+            background:rgba(8,2,5,0.98);
+            border:1px solid var(--red-dim);
+            border-top:none;
+            border-radius:0 0 16px 16px;
+            z-index:1900;
+            transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+            opacity:0;
+            box-shadow:0 20px 50px rgba(0,0,0,0.8),0 0 30px rgba(255,0,0,0.08);
+        }
+        .nav-dropdown.open{
+            max-height:50vh;
+            opacity:1;
+            overflow-y:auto;
+        }
+        .nav-dropdown ul{list-style:none;padding:8px 0;}
+        .nav-dropdown ul li{border-bottom:1px solid rgba(255,42,42,0.08);}
+        .nav-dropdown ul li:last-child{border-bottom:none;}
+        .nav-dropdown ul li a{
+            display:flex;align-items:center;gap:14px;
+            padding:13px 24px;
+            color:#ffbcbc;text-decoration:none;
+            font-family:'Share Tech Mono',monospace;font-size:0.95rem;
+            transition:0.18s;border-left:3px solid transparent;
+        }
+        .nav-dropdown ul li a i{width:20px;color:var(--red);font-size:1rem;}
+        .nav-dropdown ul li a:hover{
+            background:#ff2a2a10;color:#fff;
+            border-left-color:var(--red);
+            padding-left:30px;
         }
 
-        body {
-            background-color: #0a0508;
-            font-family: 'Inter', sans-serif;
-            color: #f0e6ea;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+        /* overlay */
+        .nav-overlay{display:none;position:fixed;inset:0;z-index:1800;background:rgba(0,0,0,0.35);}
+        .nav-overlay.active{display:block;}
+
+        /* ======= PAGES ======= */
+        .page{display:none;min-height:100vh;padding-top:58px;}
+        .page.active{display:block;}
+
+        /* HOME PAGE */
+        .hero{
+            min-height:92vh;display:flex;align-items:center;
+            justify-content:center;text-align:center;flex-direction:column;
+            padding:20px;
+        }
+        .hero img{width:min(260px,62vw);margin-bottom:18px;}
+        .typing-text{
+            font-size:clamp(1rem,3.5vw,1.7rem);
+            border-right:3px solid var(--red);color:#b30000;
+            white-space:nowrap;overflow:hidden;width:0;
+            animation:typing 3s steps(30,end) forwards,blink 0.7s step-end infinite;
+            margin:14px auto;display:inline-block;
+            font-family:'Share Tech Mono',monospace;
+        }
+        @keyframes typing{from{width:0}to{width:100%}}
+        @keyframes blink{0%,100%{border-color:var(--red)}50%{border-color:transparent}}
+        .hero-sub{
+            max-width:min(580px,88vw);
+            background:#1a080c80;padding:12px 20px;border-radius:30px;
+            font-size:0.88rem;color:#d9c2ca;margin-top:4px;
         }
 
-        /* RED / CRIMSON DARK THEME - Unique Hacker Vibe */
-        :root {
-            --glow-red: #ff2a2a;
-            --glow-shadow: 0 0 8px #ff0000aa, 0 0 15px #ff3300aa;
-            --border-red: rgba(255, 30, 30, 0.6);
-            --card-bg: rgba(18, 6, 10, 0.82);
+        /* BLOG */
+        .blog-section{padding:50px 5% 70px;max-width:1300px;margin:0 auto;}
+        .blog-section h2{
+            font-family:'Share Tech Mono',monospace;
+            font-size:clamp(1.3rem,3.5vw,1.9rem);
+            color:#ffdede;border-left:5px solid var(--red);
+            padding-left:16px;margin-bottom:28px;display:flex;align-items:center;gap:12px;
+        }
+        .blog-section h2 i{color:var(--red);font-size:0.9em;}
+
+        /* CARDS GRID */
+        .cards-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));
+            gap:22px;
         }
 
-        /* MATRIX RED VERSION background canvas */
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            opacity: 0.35;
-            pointer-events: none;
+        /* FLIP CARD */
+        .card{perspective:900px;height:240px;cursor:pointer;}
+        .card-inner{
+            position:relative;width:100%;height:100%;
+            transition:transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+            transform-style:preserve-3d;
+        }
+        .card:hover .card-inner,.card.flipped .card-inner{transform:rotateY(180deg);}
+        .card-front,.card-back{
+            position:absolute;inset:0;border-radius:20px;
+            backface-visibility:hidden;-webkit-backface-visibility:hidden;
+            border:1px solid var(--red-dim);background:var(--card-bg);
+            backdrop-filter:blur(6px);box-shadow:0 10px 24px -8px rgba(0,0,0,0.7);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.4rem;
+        }
+        .card-front{gap:12px;}
+        .card-front .card-icon{font-size:2.8rem;color:#ff4d4d;filter:drop-shadow(0 0 6px #ff000088);}
+        .card-front .card-title{font-family:'Share Tech Mono',monospace;font-size:1rem;color:#ffb7b7;text-align:center;line-height:1.3;}
+        .card-back{transform:rotateY(180deg);align-items:flex-start;justify-content:flex-start;overflow-y:auto;}
+        .card-back h3{font-family:'Share Tech Mono',monospace;font-size:1rem;margin-bottom:8px;color:#ffb7b7;width:100%;}
+        .card-back p{color:#d9c2ca;font-size:0.83rem;line-height:1.5;margin:3px 0;}
+        .ppt-btn{
+            display:inline-flex;align-items:center;gap:8px;
+            background:#1f0a0f;border:1px solid #ff3a3a;
+            padding:7px 14px;margin-top:10px;
+            border-radius:40px;color:#ff9e9e;cursor:pointer;
+            transition:0.2s;font-family:monospace;font-size:0.75rem;font-weight:bold;
+        }
+        .ppt-btn:hover{background:#ff1a1a30;box-shadow:0 0 10px #ff3a3a;color:#fff;}
+
+        /* SMOOTH STAGGER */
+        .cards-grid .card{opacity:0;transform:translateY(26px);transition:opacity 0.42s ease,transform 0.42s ease;}
+        .cards-grid .card.visible{opacity:1;transform:translateY(0);}
+
+        /* INNER PAGES */
+        .inner-page{padding:80px 5% 60px;max-width:1300px;margin:0 auto;}
+        .section-header{display:flex;align-items:center;gap:20px;margin-bottom:36px;flex-wrap:wrap;}
+        .section-header img{max-height:75px;max-width:180px;object-fit:contain;}
+        .section-header h2{
+            font-family:'Share Tech Mono',monospace;
+            font-size:clamp(1.3rem,4vw,2rem);
+            color:#ffdede;border-left:5px solid var(--red);padding-left:16px;
+        }
+        .back-btn{
+            display:inline-flex;align-items:center;gap:8px;
+            background:#1f0a0f;border:1px solid #ff3a3a;
+            padding:9px 20px;border-radius:40px;color:#ff9e9e;
+            cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.85rem;
+            margin-bottom:22px;transition:0.2s;
+        }
+        .back-btn:hover{background:#ff1a1a30;color:#fff;box-shadow:0 0 10px #ff3a3a;}
+
+        .vis-diagram,.tool-preview{
+            background:#11080c;border-radius:10px;
+            padding:5px 10px;margin:8px 0;
+            font-family:monospace;font-size:0.68rem;
+            border-left:3px solid var(--red);color:#ffbfbf;width:100%;
         }
 
-        /* SIDEBAR MENU (fixed left) */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 280px;
-            height: 100vh;
-            background: rgba(8, 2, 5, 0.95);
-            backdrop-filter: blur(12px);
-            border-right: 2px solid var(--glow-red);
-            z-index: 1000;
-            padding: 30px 20px;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            box-shadow: 5px 0 25px rgba(255, 0, 0, 0.2);
+        /* FOOTER */
+        .cyber-footer{
+            background:#020105;border-top:2px solid var(--red);
+            font-family:'Share Tech Mono',monospace;
+            padding:22px 20px 14px;
+            display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;
         }
+        .cyber-footer img{height:38px;filter:drop-shadow(0 0 5px rgba(255,42,42,0.4));}
+        .cyber-footer .socials{display:flex;gap:12px;justify-content:center;}
+        .cyber-footer .socials a{
+            background:#1e1117;width:38px;height:38px;border-radius:50%;
+            display:inline-flex;align-items:center;justify-content:center;
+            font-size:1.1rem;color:#ffbbbb;border:1px solid #3a1a22;
+            text-decoration:none;transition:0.2s;
+        }
+        .cyber-footer .socials a:hover{background:var(--red);color:#000;transform:translateY(-3px);}
+        .cyber-footer .footer-copy{font-size:0.7rem;color:#aa7f8b;border-top:1px solid #2f1a1f;width:100%;padding-top:12px;}
+        .blink-red{animation:softPulse 1.5s infinite;}
+        @keyframes softPulse{0%{text-shadow:0 0 0 var(--red)}100%{text-shadow:0 0 6px var(--red)}}
 
-        .sidebar h2 {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.6rem;
-            text-align: center;
-            color: #ff4646;
-            border-bottom: 1px solid #ff3a3a;
-            padding-bottom: 12px;
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-        }
+        ::-webkit-scrollbar{width:5px;}
+        ::-webkit-scrollbar-track{background:#1a0505;}
+        ::-webkit-scrollbar-thumb{background:var(--red);border-radius:8px;}
 
-        .sidebar nav ul {
-            list-style: none;
+        /* MOBILE */
+        @media(max-width:600px){
+            .cards-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+            .card{height:180px;}
+            .card-front .card-icon{font-size:2rem;}
+            .card-front .card-title{font-size:0.78rem;}
+            .inner-page{padding:70px 4% 50px;}
+            .section-header img{max-height:55px;}
         }
-
-        .sidebar nav ul li {
-            margin: 18px 0;
-        }
-
-        .sidebar nav ul li a {
-            color: #ffbcbc;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 8px 15px;
-            border-radius: 40px;
-            transition: all 0.25s;
-            font-family: 'Share Tech Mono', monospace;
-        }
-
-        .sidebar nav ul li a i {
-            width: 28px;
-            font-size: 1.3rem;
-            color: #ff5e5e;
-        }
-
-        .sidebar nav ul li a:hover {
-            background: #ff1a1a30;
-            box-shadow: 0 0 10px #ff0000;
-            transform: translateX(6px);
-            color: #fff;
-        }
-
-        /* Main content area with left margin */
-        .main-content {
-            margin-left: 280px;
-            transition: margin 0.3s;
-        }
-
-        /* Glowing effects and cards */
-        .cyber-glow {
-            text-shadow: 0 0 4px #ff3a3a, 0 0 8px #ff0000;
-        }
-
-        h1, h2, h3, .mono {
-            font-family: 'Share Tech Mono', monospace;
-        }
-
-        h2 {
-            font-size: 2.4rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-            border-left: 6px solid #ff3a3a;
-            padding-left: 20px;
-            color: #ffdede;
-        }
-
-        .section {
-            padding: 80px 5%;
-            position: relative;
-            z-index: 2;
-            border-bottom: 1px solid rgba(255, 40, 40, 0.2);
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        /* Cards grid - neon red */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(6px);
-            border: 1px solid var(--border-red);
-            border-radius: 28px;
-            padding: 1.8rem;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 12px 25px -8px rgba(0,0,0,0.7);
-        }
-
-        .card:hover {
-            transform: scale(1.02) translateY(-6px);
-            border-color: #ff4d4d;
-            box-shadow: 0 0 25px #ff1a1a, 0 15px 30px -5px black;
-        }
-
-        .card-icon {
-            font-size: 2.8rem;
-            color: #ff4d4d;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 4px #ff0000);
-        }
-
-        .card h3 {
-            font-size: 1.7rem;
-            margin-bottom: 0.5rem;
-            color: #ffb7b7;
-        }
-
-        .card p {
-            color: #d9c2ca;
-            font-size: 0.9rem;
-            line-height: 1.45;
-            margin: 8px 0;
-        }
-
-        .ppt-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #1f0a0f;
-            border: 1px solid #ff3a3a;
-            padding: 8px 18px;
-            margin-top: 18px;
-            font-weight: bold;
-            border-radius: 40px;
-            color: #ff9e9e;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: monospace;
-            font-size: 0.8rem;
-        }
-
-        .ppt-btn:hover {
-            background: #ff1a1a30;
-            box-shadow: 0 0 12px #ff3a3a;
-            color: #fff;
-        }
-
-        /* Hero */
-        .hero {
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            flex-direction: column;
-        }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            background: linear-gradient(135deg, #ff4d4d, #b30000);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .typing-text {
-            font-size: 1.8rem;
-            border-right: 3px solid #ff3a3a;
-            color: #b30000;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 0;
-            animation: typing 3s steps(30, end) forwards, blink 0.7s step-end infinite;
-            margin: 20px auto;
-            display: inline-block;
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        @keyframes blink {
-            0%, 100% { border-color: #ff3a3a; }
-            50% { border-color: transparent; }
-        }
-
-        .vis-diagram, .tool-preview {
-            background: #11080c;
-            border-radius: 12px;
-            padding: 6px 10px;
-            margin: 12px 0;
-            font-family: monospace;
-            font-size: 0.7rem;
-            border-left: 4px solid #ff3a3a;
-            color: #ffbfbf;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            border-top: 1px solid #ff3a3a55;
-            font-size: 0.8rem;
-            background: #02000150;
-        }
-
-        /* responsive: sidebar collapse on mobile */
-        @media (max-width: 850px) {
-            .sidebar {
-                transform: translateX(-100%);
-                width: 260px;
-                z-index: 1100;
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .menu-toggle {
-                display: block;
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                z-index: 1200;
-                background: #b30000;
-                padding: 12px;
-                border-radius: 30px;
-                color: white;
-                font-size: 1.4rem;
-                cursor: pointer;
-                border: 1px solid red;
-            }
-            .hero h1 { font-size: 2.4rem; }
-            .typing-text { font-size: 1rem; white-space: normal; width: auto; border-right: none; animation: none; }
-        }
-        .menu-toggle {
-            display: none;
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1a0505; }
-        ::-webkit-scrollbar-thumb { background: #ff3a3a; border-radius: 8px; }
-         .cyber-footer {
-            margin-top: 60px;
-            background: #020105;
-            border-top: 3px solid #ff2a2a;
-            position: relative;
-            font-family: 'Share Tech Mono', monospace;
-        }
-        .footer-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 30px 40px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 40px;
-        }
-        .footer-brand h2 {
-            font-size: 1.9rem;
-            background: linear-gradient(135deg, #ff2a6d, #ff5e5e);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .footer-brand p {
-            color: #ab8c9a;
-            max-width: 260px;
-        }
-        .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 55px;
-        }
-        .link-col h4 {
-            color: #ff5e5e;
-            margin-bottom: 22px;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-        .link-col a {
-            display: block;
-            color: #cba8b5;
-            text-decoration: none;
-            margin-bottom: 12px;
-            transition: 0.2s;
-        }
-        .link-col a:hover {
-            color: #ff2a2a;
-            transform: translateX(4px);
-        }
-        .socials {
-            display: flex;
-            gap: 18px;
-            margin-top: 18px;
-        }
-        .socials a {
-            background: #1e1117;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            transition: 0.2s;
-            color: #ffbbbb;
-        }
-        .socials a:hover {
-            background: #ff2a2a;
-            color: black;
-            transform: translateY(-4px);
-        }
-        .logo {
-  display: flex;
-  justify-content: center; 
-    margin: 0 auto 20px; 
-}
-        .footer-bottom {
-            text-align: center;
-            padding: 20px 30px;
-            border-top: 1px solid #2f1a1f;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            font-size: 0.75rem;
-            color: #aa7f8b;
-        }
-        .blink-red {
-            animation: softPulse 1.5s infinite;
-        }
-        
-        @keyframes softPulse {
-            0% { text-shadow: 0 0 0 #ff3a3a; }
-            100% { text-shadow: 0 0 6px #ff3a3a; }
-        }
-        @media (max-width: 850px) {
-            .sidebar { transform: translateX(-100%); width: 260px; }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .menu-toggle { display: block; position: fixed; top: 20px; left: 20px; z-index: 1200; background: #b30000; padding: 12px; border-radius: 30px; color: white; font-size: 1.4rem; cursor: pointer; border: 1px solid red; }
-            .hero h1 { font-size: 2.4rem; }
-            .lust-title { font-size: 1.4rem; }
-        }
-        .menu-toggle { display: none; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1a0505; }
-        ::-webkit-scrollbar-thumb { background: #ff3a3a; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <canvas id="matrix-canvas"></canvas>
-<div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i> MENU</div>
 
-<!-- SIDEBAR NAVIGATION -->
-<div class="sidebar" id="sidebar">
-            <img src="NULL-HACKERS.png" alt="" width="200">
-
-    <nav>
-        <ul>
-            <li><a href="#home"><i class="fas fa-home"></i> Home / Nexus</a></li>
-            <li><a href="#crypto"><i class="fas fa-lock"></i> Cryptography</a></li>
-            <li><a href="#network"><i class="fas fa-network-wired"></i> Network Security</a></li>
-            <li><a href="#malware"><i class="fas fa-bug"></i> Malware & Threats</a></li>
-            <li><a href="#auth"><i class="fas fa-id-card"></i> Authentication</a></li>
-            <li><a href="#ethical"><i class="fas fa-user-secret"></i> Ethical Hacking</a></li>
-            <li><a href="#tools"><i class="fas fa-tools"></i> Security Tools</a></li>
-            <li><a href="#books"><i class="fas fa-book-open"></i> Books Library</a></li>
-            <li><a href="#cheatsheets"><i class="fas fa-scroll"></i> Cheat Sheets</a></li>
-            <li><a href="#certs"><i class="fas fa-certificate"></i> Certifications</a></li>
-        </ul>
-    </nav>
-    <div style="margin-top: 40px; text-align: center; font-size: 0.7rem; border-top: 1px solid red; padding-top: 20px;">
-        <i class="fas fa-shield-haltered"></i> Red Team Intel
+<!-- TOP NAV -->
+<nav class="topnav">
+    <div class="topnav-logo">
+        <!-- <img src="image/NULL-HACKERS.png" alt="NULL HACKERS" width="180px"> -->
     </div>
+    <button class="topnav-menu-btn" id="menuBtn">
+        <i class="fas fa-bars"></i> MENU
+    </button>
+</nav>
+
+<!-- NAV OVERLAY -->
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- DROPDOWN — slides down from top, scrollable, max half screen -->
+<div class="nav-dropdown" id="navDropdown">
+    <ul>
+        <li><a href="#" data-page="home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#" data-page="crypto"><i class="fas fa-lock"></i> Cryptography</a></li>
+        <li><a href="#" data-page="network"><i class="fas fa-network-wired"></i> Network Security</a></li>
+        <li><a href="#" data-page="malware"><i class="fas fa-bug"></i> Malware & Threats</a></li>
+        <li><a href="#" data-page="auth"><i class="fas fa-id-card"></i> Authentication</a></li>
+        <li><a href="#" data-page="ethical"><i class="fas fa-user-secret"></i> Ethical Hacking</a></li>
+        <li><a href="#" data-page="tools"><i class="fas fa-tools"></i> Security Tools</a></li>
+        <li><a href="#" data-page="books"><i class="fas fa-book-open"></i> Books Library</a></li>
+        <li><a href="#" data-page="cheatsheets"><i class="fas fa-scroll"></i> Cheat Sheets</a></li>
+        <li><a href="#" data-page="certs"><i class="fas fa-certificate"></i> Certifications</a></li>
+    </ul>
 </div>
 
-<div class="main-content" id="mainContent">
-    <!-- HERO / HOME SECTION (with articles) -->
-    <section class="hero" id="home" data-aos="fade-up">
-        <div class="container">
-            <img src="image/LOGO-removebg-preview.png" alt="" width="300">
-            <!-- <h1>🔥 NULL HACKERS 🔥</h1> -->
-            <div style="display: flex; justify-content: center;">
-                <div class="typing-text">Cybersecurity is the future</div>
-            </div>
-            <p style="margin-top: 25px; max-width: 700px; background: #1a080c80; padding: 15px; border-radius: 30px;">Offensive mindset | Crimson protocols | Zero-trust </p>
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+    <div class="hero" data-aos="fade-up">
+        <img src="image/LOGO-removebg-preview.png" alt="NULL HACKERS">
+        <div style="display:flex;justify-content:center;">
+            <div class="typing-text">Cybersecurity is the future</div>
         </div>
-    </section>
+        <p class="hero-sub">Offensive mindset | Crimson protocols | Zero-trust</p>
+    </div>
 
-    <!-- ARTICLES / INFORMATION SECTION (unique red info cards) -->
-    <section class="section" data-aos="fade-up">
-        <div class="container">
-           <img src="LCI.png" alt="" width="400">
-            <div class="cards-grid" id="articles-grid"></div>
-        </div>
-    </section>
+    <div class="blog-section" data-aos="fade-up">
+        <h2><i class="fas fa-rss"></i> Latest Intel</h2>
+        <div class="cards-grid" id="articles-grid"></div>
+    </div>
 
-    <!-- REST OF SECTIONS (dynamic created) -->
-    <section class="section" id="crypto" data-aos="fade-up"><div class="container"><img src="image/crypto.png" alt="" width="250"><div class="cards-grid" id="crypto-cards"></div></div></section>
-    <section class="section" id="network" data-aos="fade-up"><div class="container"><img src="image/netsec.png" alt="" width="250"><div class="cards-grid" id="network-cards"></div></div></section>
-    <section class="section" id="malware" data-aos="fade-up"><div class="container"><img src="image/mal.png" alt="" width="250"><div class="cards-grid" id="malware-cards"></div></div></section>
-    <section class="section" id="auth" data-aos="fade-up"><div class="container"><img src="image/auth.png" alt="" width="250"><div class="cards-grid" id="auth-cards"></div></div></section>
-    <section class="section" id="ethical" data-aos="fade-up"><div class="container"><img src="image/ethical.png" alt="" width="250"><div class="cards-grid" id="ethical-cards"></div></div></section>
-    <section class="section" id="tools" data-aos="fade-up"><div class="container"><img src="image/sectool.png" alt="" width="250"><div class="cards-grid" id="tools-cards"></div></div></section>
-    <section class="section" id="books" data-aos="fade-up"><div class="container"><img src="image/books.png" alt="" width="150"><div class="cards-grid" id="books-cards"></div></div></section>
-    <section class="section" id="cheatsheets" data-aos="fade-up"><div class="container"><img src="image/chsh.png" alt="" width="250"><div class="cards-grid" id="cheat-cards"></div></div></section>
-    <section class="section" id="certs" data-aos="fade-up"><div class="container"><img src="image/cert.png" alt="" width="250"><div class="cards-grid" id="certs-cards"></div></div></section>
-  <footer class="cyber-footer">
-      <img src="image/NULL-HACKERS.png" class="logo" width="200">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <p>Offensive mindset · Crimson protocols · Zero-trust architecture. Weaponize knowledge, own the red dawn.</p>
-                <div class="socials">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="footer-links">
-                <div class="link-col">
-                    <h4><i class="fas fa-bolt"></i> EXPLOIT</h4>
-                    <a href="#">Red Team Ops</a>
-                    <a href="#">CTF Challenges</a>
-                    <a href="#">Zero-Day Vault</a>
-                    <a href="#">Exploit Dev</a>
-                </div>
-                <div class="link-col">
-                    <h4><i class="fas fa-shield-haltered"></i> DEFENSE</h4>
-                    <a href="#">Threat Intel</a>
-                    <a href="#">IR Playbooks</a>
-                    <a href="#">Honeypots</a>
-                    <a href="#">Blue Team Tools</a>
-                </div>
-                <div class="link-col">
-                    <h4><i class="fas fa-scroll"></i> RESOURCES</h4>
-                    <a href="#">Cheatsheets Armory</a>
-                    <a href="#">Certification Path</a>
-                    <a href="#">Cyber Blog</a>
-                    <a href="#">Darkweb Reports</a>
-                </div>
-            </div>
+    <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
-        <div class="footer-bottom">
-            <div>© 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span></div>
-            <div><i class="fas fa-terminal"></i> root@cyberspace:~#  <span style="color:#ff5e5e;">| 0xFA11 0xRED</span></div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
         </div>
-    </footer></div>
+    </footer>
+</div>
+
+<!-- ===== INNER PAGES ===== -->
+<div class="page" id="page-crypto">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/crypto.png" alt="Cryptography">
+            <!-- <h2>Cryptography</h2> -->
+        </div>
+        <div class="cards-grid" id="crypto-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-network">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/netsec.png" alt="Network Security">
+            <!-- <h2>Network Security</h2> -->
+        </div>
+        <div class="cards-grid" id="network-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-malware">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/mal.png" alt="Malware">
+            <!-- <h2>Malware & Threats</h2> -->
+        </div>
+        <div class="cards-grid" id="malware-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-auth">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/auth.png" alt="Authentication">
+            <!-- <h2>Authentication</h2> -->
+        </div>
+        <div class="cards-grid" id="auth-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-ethical">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/ethical.png" alt="Ethical Hacking">
+            <!-- <h2>Ethical Hacking</h2> -->
+        </div>
+        <div class="cards-grid" id="ethical-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-tools">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/sectool.png" alt="Security Tools">
+            <!-- <h2>Security Tools</h2> -->
+        </div>
+        <div class="cards-grid" id="tools-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-books">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/books.png" alt="Books">
+            <!-- <h2>Books Library</h2> -->
+        </div>
+        <div class="cards-grid" id="books-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-cheatsheets">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/chsh.png" alt="Cheat Sheets">
+            <!-- <h2>Cheat Sheets</h2> -->
+        </div>
+        <div class="cards-grid" id="cheat-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
+
+<div class="page" id="page-certs">
+    <div class="inner-page">
+        <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
+        <div class="section-header">
+            <img src="image/cert.png" alt="Certifications">
+            <!-- <h2>Certifications</h2> -->
+        </div>
+        <div class="cards-grid" id="certs-cards"></div>
+    </div>
+       <footer class="cyber-footer">
+        <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
+        <div class="socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-copy">
+            © 2025 NULL HACKERS — <span class="blink-red">[ Ethical Crimson Unit ]</span>
+            &nbsp;|&nbsp;<i class="fas fa-terminal"></i> root@cyberspace:~# <span style="color:#ff5e5e;">0xFA11</span>
+        </div>
+    </footer>
+</div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init({ duration: 700, once: false, mirror: false });
-    
-    // RED MATRIX BACKGROUND (crimson digits)
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const chars = "01xX#%&$REDH4CK!@#$%^&*()_+{}:<>>~";
-    const fontSize = 18;
-    let columns = canvas.width / fontSize;
-    let drops = Array(Math.floor(columns)).fill(1);
-    
-    function drawRedMatrix() {
-        ctx.fillStyle = "rgba(8, 1, 3, 0.06)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#ff3a3a";
-        ctx.font = fontSize + "px 'Share Tech Mono'";
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
-        }
+AOS.init({duration:700,once:true});
+
+/* ---- MATRIX ---- */
+const canvas=document.getElementById('matrix-canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+const chars="01xX#%REDH4CK!@#$%^&*()_+{}~";
+const fs=16;let cols=canvas.width/fs;
+let drops=Array(Math.floor(cols)).fill(1);
+function drawMatrix(){
+    ctx.fillStyle="rgba(8,1,3,0.06)";ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#ff3a3a";ctx.font=fs+"px 'Share Tech Mono'";
+    for(let i=0;i<drops.length;i++){
+        ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*fs,drops[i]*fs);
+        if(drops[i]*fs>canvas.height&&Math.random()>0.975)drops[i]=0;
+        drops[i]++;
     }
-    setInterval(drawRedMatrix, 55);
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        columns = canvas.width / fontSize;
-        drops = Array(Math.floor(columns)).fill(1);
-    });
-    
-    // PPT generator (fake but functional download)
-    function downloadPPT(topicName, category) {
-        let content = `🔥 CYBERSENTINEL PRESENTATION: ${topicName} (${category})\n🔴 SLIDES: 8-10 structure\n\n`;
-        for (let i = 1; i <= 9; i++) {
-            if(i===1) content += `Slide ${i}: TITLE - ${topicName} Red Team Edition\n`;
-            else if(i===2) content += `Slide ${i}: Core Definition & Attack Vectors\n`;
-            else if(i===3) content += `Slide ${i}: Technical Workflow (ASCII Diagram)\n`;
-            else if(i===4) content += `Slide ${i}: Real-World Breach Example\n`;
-            else if(i===5) content += `Slide ${i}: Advantages & Risks (Red Hat Analysis)\n`;
-            else if(i===6) content += `Slide ${i}: Countermeasures & Mitigation\n`;
-            else if(i===7) content += `Slide ${i}: Industry Use Cases (Fortune 500)\n`;
-            else if(i===8) content += `Slide ${i}: Future Trends & Zero-day Insights\n`;
-            else content += `Slide ${i}: Conclusion + References\n`;
-        }
-        const blob = new Blob([content], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${topicName.replace(/\s/g, '_')}_${category}.ppt`;
-        link.click();
-        URL.revokeObjectURL(link.href);
+}
+setInterval(drawMatrix,55);
+window.addEventListener('resize',()=>{
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+    cols=canvas.width/fs;drops=Array(Math.floor(cols)).fill(1);
+});
+
+/* ---- NAVIGATION ---- */
+const menuBtn=document.getElementById('menuBtn');
+const navDropdown=document.getElementById('navDropdown');
+const navOverlay=document.getElementById('navOverlay');
+
+function closeNav(){
+    navDropdown.classList.remove('open');
+    navOverlay.classList.remove('active');
+    menuBtn.classList.remove('active');
+}
+function openNav(){
+    navDropdown.classList.add('open');
+    navOverlay.classList.add('active');
+    menuBtn.classList.add('active');
+}
+menuBtn.addEventListener('click',()=>navDropdown.classList.contains('open')?closeNav():openNav());
+navOverlay.addEventListener('click',closeNav);
+
+/* ---- PAGE SWITCHING ---- */
+function showPage(pageId){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const target=document.getElementById('page-'+pageId);
+    if(target){
+        target.classList.add('active');
+        window.scrollTo({top:0,behavior:'instant'});
+        setTimeout(()=>triggerStagger('page-'+pageId),60);
     }
-    
-    function createCard(icon, title, descLines, extraHtml, pptTopic, category) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        let descHtml = Array.isArray(descLines) ? descLines.map(l => `<p>${l}</p>`).join('') : `<p>${descLines}</p>`;
-        card.innerHTML = `
-            <div class="card-icon"><i class="${icon}"></i></div>
-            <h3>${title}</h3>
-            ${descHtml}
-            ${extraHtml || ''}
-            <div class="ppt-btn" data-tpp="${title}"><i class="fas fa-download"></i> View Presentation (PPT)</div>
-        `;
-        const btn = card.querySelector('.ppt-btn');
-        btn.addEventListener('click', () => downloadPPT(pptTopic || title, category));
-        return card;
-    }
-    
-    // ARTICLES (home section cyber news)
-    const articles = [
-        { icon: "fas fa-shield-virus", title: "Ransomware Surge 2025", desc: "New polymorphic variants evade EDR — learn defense strategies." },
-        { icon: "fas fa-eye", title: "AI in Offensive Security", desc: "LLM-driven social engineering and automated payloads on rise." },
-        { icon: "fas fa-database", title: "Cloud Misconfiguration", desc: "S3 leaks & IAM flaws: 80% of breaches involve misconfig." },
-        { icon: "fas fa-chart-line", title: "Zero Trust Architecture", desc: "Implementation challenges & micro-segmentation success." }
-    ];
-    const artGrid = document.getElementById('articles-grid');
-    articles.forEach(art => {
-        artGrid.appendChild(createCard(art.icon, art.title, [art.desc], "", art.title, "CyberIntel"));
-    });
-    
-    // -------- POPULATE ALL SECTIONS (red theme) -------
-    // CRYPTO
-    const cryptoTopics = [
-        { icon: "fas fa-key", title: "AES Encryption", desc: ["Symmetric 256-bit, NIST approved.", "Real-world: VPN, Disk encryption."] },
-        { icon: "fas fa-key", title: "DES Encryption", desc: ["Legacy 56-bit, broken by brute-force.", "Historical significance."] },
-        { icon: "fas fa-calculator", title: "RSA Algorithm", desc: ["Asymmetric, factoring primes.", "HTTPS, digital signatures."] },
-        { icon: "fas fa-fingerprint", title: "Hash Functions (MD5,SHA)", desc: ["Integrity checks, password hashing.", "MD5 deprecated, SHA-256 standard."] }
-    ];
-    const cryptoCont = document.getElementById('crypto-cards');
-    cryptoTopics.forEach(t => cryptoCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Cryptography")));
-    
-    // NETWORK
-    const netTopics = [
-        { icon: "fas fa-shield-alt", title: "Firewalls", desc: ["Filter traffic, stateful inspection.", "Diagram: Internet → FW → LAN"], diag: " [Firewall] ruleset active" },
-        { icon: "fas fa-eye", title: "IDS (Intrusion Detection)", desc: ["Signature/anomaly alerts.", "Diagram: Traffic → IDS → Logs"], diag: " alerts on suspicious patterns" },
-        { icon: "fas fa-laptop-code", title: "VPN", desc: ["Encrypted tunnels, remote access.", "Hide IP, secure comms"], diag: " [Client] === Tunnel === [VPN GW]" },
-        { icon: "fas fa-snooze", title: "Packet Sniffing", desc: ["Capture packets (Wireshark).", "Passive recon or MITM."], diag: " NIC promiscuous mode" }
-    ];
-    const netCont = document.getElementById('network-cards');
-    netTopics.forEach(t => netCont.appendChild(createCard(t.icon, t.title, t.desc, `<div class="vis-diagram"><i class="fas fa-chart-simple"></i> ${t.diag}</div>`, t.title, "NetworkSec")));
-    
-    // MALWARE
-    const malTopics = [
-        { icon: "fas fa-virus", title: "Viruses", desc: ["Attack: attaches to executables.", "Prevent: AV, code signing."] },
-        { icon: "fas fa-worm", title: "Worms", desc: ["Self-spreads via network.", "Prevent: patching, segmentation."] },
-        { icon: "fas fa-user-secret", title: "Trojans", desc: ["Disguised as legit software.", "Prevent: app vetting, EDR."] },
-        { icon: "fas fa-microchip", title: "Rootkits", desc: ["OS-level stealth persistence.", "Prevent: secure boot, monitoring."] }
-    ];
-    const malCont = document.getElementById('malware-cards');
-    malTopics.forEach(t => malCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Malware")));
-    
-    // AUTH
-    const authTopics = [
-        { icon: "fas fa-key", title: "Password Security", desc: ["Hashing + salt", "Risks: reuse, brute-force."] },
-        { icon: "fas fa-mobile-alt", title: "Multi-Factor Auth", desc: ["Password + TOTP/biometric", "SIM swap risk"] },
-        { icon: "fas fa-token", title: "JWT", desc: ["Stateless tokens", "Risks: weak secret, XSS"] },
-        { icon: "fas fa-cookie", title: "Session Auth", desc: ["Cookie-based", "Risks: CSRF, fixation"] }
-    ];
-    const authCont = document.getElementById('auth-cards');
-    authTopics.forEach(t => authCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Auth")));
-    
-    // ETHICAL
-    const ethTopics = [
-        { icon: "fas fa-dice-d6", title: "Penetration Testing", desc: ["Simulate attack, find flaws.", "Defense: patch & retest"] },
-        { icon: "fas fa-users", title: "Social Engineering", desc: ["Phishing, baiting.", "Defense: training, MFA"] },
-        { icon: "fas fa-database", title: "SQL Injection", desc: ["' OR 1=1; -- ", "Defense: param queries, WAF"] },
-        { icon: "fas fa-code", title: "XSS", desc: ["Inject scripts, steal cookies.", "Defense: CSP, output encode"] }
-    ];
-    const ethCont = document.getElementById('ethical-cards');
-    ethTopics.forEach(t => ethCont.appendChild(createCard(t.icon, t.title, t.desc, "", t.title, "Ethical")));
-    
-    // TOOLS
-    const toolsData = [
-        { icon: "fas fa-chart-line", title: "Wireshark", desc: ["Packet capture & analysis.", "Filters: tcp.port==443"], preview: " Capture → Follow TCP Stream" },
-        { icon: "fas fa-skull-crossbones", title: "Metasploit", desc: ["Exploit dev framework.", "msfconsole payloads"], preview: "use exploit/windows/smb/ms17_010" },
-        { icon: "fas fa-map", title: "Nmap", desc: ["Port scanning, OS detection.", "nmap -sV -p- target"], preview: " SYN scan, version detection" },
-        { icon: "fas fa-bug", title: "Burp Suite", desc: ["Web proxy & scanner.", "Repeater, Intruder"], preview: "Intercept → fuzz → analyze" }
-    ];
-    const toolCont = document.getElementById('tools-cards');
-    toolsData.forEach(t => toolCont.appendChild(createCard(t.icon, t.title, t.desc, `<div class="tool-preview"><i class="fas fa-terminal"></i> ${t.preview}</div>`, t.title, "Tools")));
-    
-    // BOOKS
-    const books = [
-        { title: "Red Team Field Manual", desc: "Tactical reference.", icon: "fas fa-book" },
-        { title: "The Web App Hacker's Handbook", desc: "Web exploitation.", icon: "fas fa-globe" },
-        { title: "Metasploit: Guide", desc: "Pentesting.", icon: "fas fa-rocket" },
-        { title: "Practical Binary Analysis", desc: "Reverse engineering.", icon: "fas fa-microscope" },
-        { title: "Hacking: Art of Exploitation", desc: "Low-level hacking.", icon: "fas fa-code" },
-        { title: "Applied Cryptography", desc: "Protocols deep dive.", icon: "fas fa-lock" }
-    ];
-    const bookCont = document.getElementById('books-cards');
-    books.forEach(b => bookCont.appendChild(createCard(b.icon, b.title, [b.desc], "", b.title, "Books")));
-    
-    // CHEAT SHEETS (with PDF)
-    function downloadPDFCheat(title, content) {
-        const txtData = `🔴 CYBER CHEAT SHEET 🔴\n${title}\n\n${content}\n--- RedTeam Reference ---`;
-        const blob = new Blob([txtData], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${title.replace(/\s/g,'_')}_cheatsheet.pdf`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-    }
-    const cheatItems = [
-        { title: "Linux Red Team Commands", content: "ps aux, netstat -tulpn, ss -lntp, chmod 777, tcpdump", icon: "fab fa-linux" },
-        { title: "Nmap Pro Scan", content: "nmap -sS -sV -p- -T4 target, -sC default scripts", icon: "fas fa-map-marked-alt" },
-        { title: "Wireshark Red Filters", content: "http.request, tls.handshake, ip.src==192.168.1.0/24", icon: "fas fa-filter" },
-        { title: "SQLi Payloads", content: "' OR '1'='1'; -- , UNION SELECT null,user(),3", icon: "fas fa-database" }
-    ];
-    const cheatCont = document.getElementById('cheat-cards');
-    cheatItems.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<div class="card-icon"><i class="${c.icon}"></i></div><h3>${c.title}</h3><p>Quick reference: ${c.content.substring(0, 70)}...</p><div class="ppt-btn cheat-dl"><i class="fas fa-file-pdf"></i> Download PDF (CheatSheet)</div>`;
-        const btn = card.querySelector('.cheat-dl');
-        btn.addEventListener('click', () => downloadPDFCheat(c.title, c.content));
-        cheatCont.appendChild(card);
-    });
-    
-    // CERTIFICATIONS
-    const certsList = [
-        { name: "CEH v12", level: "Intermediate", value: "Recognized red team entry", icon: "fas fa-hackerrank" },
-        { name: "CompTIA Security+", level: "Fundamental", value: "DoD baseline", icon: "fas fa-shield" },
-        { name: "OSCP", level: "Advanced", value: "Elite practical cert", icon: "fas fa-skull" },
-        { name: "CISSP", level: "Expert", value: "Management & architecture", icon: "fas fa-crown" }
-    ];
-    const certCont = document.getElementById('certs-cards');
-    certsList.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<div class="card-icon"><i class="${c.icon}"></i></div><h3>${c.name}</h3><p>Difficulty: ${c.level}</p><p>Career: ${c.value}</p><div class="ppt-btn cert-dl"><i class="fas fa-download"></i> Download PPT (Cert Pack)</div>`;
-        card.querySelector('.cert-dl').addEventListener('click', () => downloadPPT(c.name, "Certification"));
-        certCont.appendChild(card);
-    });
-    
-    // Sidebar mobile toggle
-    const toggleBtn = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-    });
-    document.querySelectorAll('.sidebar nav ul li a').forEach(link => {
-        link.addEventListener('click', () => {
-            if(window.innerWidth <= 850) sidebar.classList.remove('open');
+    closeNav();
+}
+function goHome(){showPage('home');}
+
+document.querySelectorAll('[data-page]').forEach(a=>{
+    a.addEventListener('click',e=>{e.preventDefault();showPage(a.dataset.page);});
+});
+
+/* ---- STAGGER ---- */
+function triggerStagger(pageId){
+    const pg=document.getElementById(pageId);
+    if(!pg)return;
+    pg.querySelectorAll('.cards-grid .card:not(.visible)').forEach((c,i)=>
+        setTimeout(()=>c.classList.add('visible'),i*80));
+}
+function observeGrid(gridId){
+    const grid=document.getElementById(gridId);if(!grid)return;
+    const obs=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+            if(e.isIntersecting){
+                Array.from(e.target.querySelectorAll('.card')).forEach((c,i)=>
+                    setTimeout(()=>c.classList.add('visible'),i*80));
+                obs.unobserve(e.target);
+            }
         });
-    });
+    },{threshold:0.08});
+    obs.observe(grid);
+}
+
+/* ---- DOWNLOADS ---- */
+function downloadPPT(topic,cat){
+    let c=`NULL HACKERS — ${topic} (${cat})\n\n`;
+    ["TITLE","Core Concepts","Attack Vectors","Real-World Example","Defense","Tools","Trends","Conclusion"].forEach((s,i)=>c+=`Slide ${i+1}: ${s}\n`);
+    const b=new Blob([c],{type:"application/vnd.openxmlformats-officedocument.presentationml.presentation"});
+    const l=document.createElement('a');l.href=URL.createObjectURL(b);
+    l.download=`${topic.replace(/\s/g,'_')}.ppt`;l.click();URL.revokeObjectURL(l.href);
+}
+function downloadPDF(title,content){
+    const b=new Blob([`CHEAT SHEET: ${title}\n\n${content}\n-- RedTeam --`],{type:"application/pdf"});
+    const l=document.createElement('a');l.href=URL.createObjectURL(b);
+    l.download=`${title.replace(/\s/g,'_')}.pdf`;l.click();URL.revokeObjectURL(l.href);
+}
+
+/* ---- FLIP CARD ---- */
+function makeCard(icon,title,descLines,extra,pptTopic,cat){
+    const w=document.createElement('div');w.className='card';
+    const desc=Array.isArray(descLines)?descLines.map(l=>`<p>${l}</p>`).join(''):`<p>${descLines}</p>`;
+    w.innerHTML=`<div class="card-inner">
+        <div class="card-front">
+            <div class="card-icon"><i class="${icon}"></i></div>
+            <div class="card-title">${title}</div>
+        </div>
+        <div class="card-back">
+            <h3>${title}</h3>${desc}${extra||''}
+            <div class="ppt-btn"><i class="fas fa-download"></i> PPT</div>
+        </div>
+    </div>`;
+    w.addEventListener('click',e=>{if(e.target.closest('.ppt-btn'))return;w.classList.toggle('flipped');});
+    w.querySelector('.ppt-btn').addEventListener('click',e=>{e.stopPropagation();downloadPPT(pptTopic||title,cat);});
+    return w;
+}
+
+/* ---- DATA ---- */
+
+// HOME BLOGS
+const articles=[
+    {icon:"fas fa-shield-virus",title:"Ransomware Surge 2025",desc:"New polymorphic variants evade EDR — learn defense strategies."},
+    {icon:"fas fa-eye",title:"AI in Offensive Security",desc:"LLM-driven social engineering and automated payloads on rise."},
+    {icon:"fas fa-database",title:"Cloud Misconfiguration",desc:"S3 leaks & IAM flaws: 80% of breaches involve misconfig."},
+    {icon:"fas fa-chart-line",title:"Zero Trust Architecture",desc:"Implementation challenges & micro-segmentation success."}
+];
+const artGrid=document.getElementById('articles-grid');
+articles.forEach(a=>artGrid.appendChild(makeCard(a.icon,a.title,[a.desc],'',a.title,"CyberIntel")));
+observeGrid('articles-grid');
+
+// CRYPTO
+[{icon:"fas fa-key",title:"AES Encryption",desc:["Symmetric 256-bit, NIST approved.","VPN, Disk encryption."]},
+ {icon:"fas fa-key",title:"DES Encryption",desc:["Legacy 56-bit, broken by brute-force.","Historical significance."]},
+ {icon:"fas fa-calculator",title:"RSA Algorithm",desc:["Asymmetric, factoring primes.","HTTPS, digital signatures."]},
+ {icon:"fas fa-fingerprint",title:"Hash Functions",desc:["Integrity checks, password hashing.","SHA-256 standard."]}
+].forEach(t=>document.getElementById('crypto-cards').appendChild(makeCard(t.icon,t.title,t.desc,'',t.title,"Cryptography")));
+
+// NETWORK
+[{icon:"fas fa-shield-alt",title:"Firewalls",desc:["Filter traffic, stateful inspection."],diag:"[Firewall] ruleset active"},
+ {icon:"fas fa-eye",title:"IDS",desc:["Signature/anomaly alerts."],diag:"alerts on suspicious patterns"},
+ {icon:"fas fa-laptop-code",title:"VPN",desc:["Encrypted tunnels, remote access."],diag:"[Client] === Tunnel === [VPN GW]"},
+ {icon:"fas fa-snooze",title:"Packet Sniffing",desc:["Capture packets via Wireshark."],diag:"NIC promiscuous mode"}
+].forEach(t=>document.getElementById('network-cards').appendChild(
+    makeCard(t.icon,t.title,t.desc,`<div class="vis-diagram"><i class="fas fa-terminal"></i> ${t.diag}</div>`,t.title,"NetworkSec")));
+
+// MALWARE
+[{icon:"fas fa-virus",title:"Viruses",desc:["Attaches to executables.","Prevent: AV, code signing."]},
+ {icon:"fas fa-worm",title:"Worms",desc:["Self-spreads via network.","Prevent: patching."]},
+ {icon:"fas fa-user-secret",title:"Trojans",desc:["Disguised as legit software.","Prevent: app vetting."]},
+ {icon:"fas fa-microchip",title:"Rootkits",desc:["OS-level stealth.","Prevent: secure boot."]}
+].forEach(t=>document.getElementById('malware-cards').appendChild(makeCard(t.icon,t.title,t.desc,'',t.title,"Malware")));
+
+// AUTH
+[{icon:"fas fa-key",title:"Password Security",desc:["Hashing + salt","Risks: brute-force."]},
+ {icon:"fas fa-mobile-alt",title:"Multi-Factor Auth",desc:["TOTP/biometric","SIM swap risk"]},
+ {icon:"fas fa-certificate",title:"JWT",desc:["Stateless tokens","Risks: weak secret, XSS"]},
+ {icon:"fas fa-cookie",title:"Session Auth",desc:["Cookie-based","Risks: CSRF, fixation"]}
+].forEach(t=>document.getElementById('auth-cards').appendChild(makeCard(t.icon,t.title,t.desc,'',t.title,"Auth")));
+
+// ETHICAL
+[{icon:"fas fa-dice-d6",title:"Penetration Testing",desc:["Simulate attack, find flaws.","Defense: patch & retest"]},
+ {icon:"fas fa-users",title:"Social Engineering",desc:["Phishing, baiting.","Defense: training, MFA"]},
+ {icon:"fas fa-database",title:"SQL Injection",desc:["' OR 1=1; --","Defense: param queries, WAF"]},
+ {icon:"fas fa-code",title:"XSS",desc:["Inject scripts, steal cookies.","Defense: CSP, output encode"]}
+].forEach(t=>document.getElementById('ethical-cards').appendChild(makeCard(t.icon,t.title,t.desc,'',t.title,"Ethical")));
+
+// TOOLS
+[{icon:"fas fa-chart-line",title:"Wireshark",desc:["Packet capture & analysis."],preview:"Capture → Follow TCP Stream"},
+ {icon:"fas fa-skull-crossbones",title:"Metasploit",desc:["Exploit dev framework."],preview:"use exploit/windows/smb/ms17_010"},
+ {icon:"fas fa-map",title:"Nmap",desc:["Port scanning, OS detection."],preview:"nmap -sV -p- target"},
+ {icon:"fas fa-bug",title:"Burp Suite",desc:["Web proxy & scanner."],preview:"Intercept → fuzz → analyze"}
+].forEach(t=>document.getElementById('tools-cards').appendChild(
+    makeCard(t.icon,t.title,t.desc,`<div class="tool-preview"><i class="fas fa-terminal"></i> ${t.preview}</div>`,t.title,"Tools")));
+
+// BOOKS
+[{icon:"fas fa-book",title:"Red Team Field Manual",desc:"Tactical reference."},
+ {icon:"fas fa-globe",title:"Web App Hacker's Handbook",desc:"Web exploitation."},
+ {icon:"fas fa-rocket",title:"Metasploit: Guide",desc:"Pentesting."},
+ {icon:"fas fa-microscope",title:"Practical Binary Analysis",desc:"Reverse engineering."},
+ {icon:"fas fa-code",title:"Hacking: Art of Exploitation",desc:"Low-level hacking."},
+ {icon:"fas fa-lock",title:"Applied Cryptography",desc:"Protocols deep dive."}
+].forEach(b=>document.getElementById('books-cards').appendChild(makeCard(b.icon,b.title,[b.desc],'',b.title,"Books")));
+
+// CHEAT SHEETS
+[{icon:"fab fa-linux",title:"Linux Red Team",content:"ps aux, netstat -tulpn, ss -lntp, chmod 777, tcpdump"},
+ {icon:"fas fa-map-marked-alt",title:"Nmap Pro Scan",content:"nmap -sS -sV -p- -T4 target, -sC default scripts"},
+ {icon:"fas fa-filter",title:"Wireshark Filters",content:"http.request, tls.handshake, ip.src==192.168.1.0/24"},
+ {icon:"fas fa-database",title:"SQLi Payloads",content:"' OR '1'='1'; --, UNION SELECT null,user(),3"}
+].forEach(c=>{
+    const w=document.createElement('div');w.className='card';
+    w.innerHTML=`<div class="card-inner">
+        <div class="card-front"><div class="card-icon"><i class="${c.icon}"></i></div><div class="card-title">${c.title}</div></div>
+        <div class="card-back"><h3>${c.title}</h3><p>${c.content}</p><div class="ppt-btn"><i class="fas fa-file-pdf"></i> PDF</div></div>
+    </div>`;
+    w.addEventListener('click',e=>{if(e.target.closest('.ppt-btn'))return;w.classList.toggle('flipped');});
+    w.querySelector('.ppt-btn').addEventListener('click',e=>{e.stopPropagation();downloadPDF(c.title,c.content);});
+    document.getElementById('cheat-cards').appendChild(w);
+});
+
+// CERTIFICATIONS
+[{icon:"fas fa-certificate",name:"CEH v12",level:"Intermediate",value:"Recognized red team entry"},
+ {icon:"fas fa-shield",name:"CompTIA Security+",level:"Fundamental",value:"DoD baseline"},
+ {icon:"fas fa-skull",name:"OSCP",level:"Advanced",value:"Elite practical cert"},
+ {icon:"fas fa-crown",name:"CISSP",level:"Expert",value:"Management & architecture"}
+].forEach(c=>{
+    const w=document.createElement('div');w.className='card';
+    w.innerHTML=`<div class="card-inner">
+        <div class="card-front"><div class="card-icon"><i class="${c.icon}"></i></div><div class="card-title">${c.name}</div></div>
+        <div class="card-back"><h3>${c.name}</h3><p>Level: ${c.level}</p><p>${c.value}</p><div class="ppt-btn"><i class="fas fa-download"></i> PPT</div></div>
+    </div>`;
+    w.addEventListener('click',e=>{if(e.target.closest('.ppt-btn'))return;w.classList.toggle('flipped');});
+    w.querySelector('.ppt-btn').addEventListener('click',e=>{e.stopPropagation();downloadPPT(c.name,"Certification");});
+    document.getElementById('certs-cards').appendChild(w);
+});
 </script>
 </body>
 </html>
