@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>NULL HACKERS</title>
     <link rel="icon" href="image/LOGO-removebg-preview.png" type="image/jpeg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Share+Tech+Mono&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
@@ -45,7 +45,7 @@
         .topnav-menu-btn i{font-size:1rem;color:var(--red);transition:transform 0.3s;}
         .topnav-menu-btn.active i{transform:rotate(90deg);}
 
-        /* DROPDOWN PANEL — slides from top, max half screen */
+        /* DROPDOWN PANEL */
         .nav-dropdown{
             position:fixed;
             top:58px;left:50%;
@@ -62,11 +62,7 @@
             opacity:0;
             box-shadow:0 20px 50px rgba(0,0,0,0.8),0 0 30px rgba(255,0,0,0.08);
         }
-        .nav-dropdown.open{
-            max-height:50vh;
-            opacity:1;
-            overflow-y:auto;
-        }
+        .nav-dropdown.open{max-height:50vh;opacity:1;overflow-y:auto;}
         .nav-dropdown ul{list-style:none;padding:8px 0;}
         .nav-dropdown ul li{border-bottom:1px solid rgba(255,42,42,0.08);}
         .nav-dropdown ul li:last-child{border-bottom:none;}
@@ -78,11 +74,7 @@
             transition:0.18s;border-left:3px solid transparent;
         }
         .nav-dropdown ul li a i{width:20px;color:var(--red);font-size:1rem;}
-        .nav-dropdown ul li a:hover{
-            background:#ff2a2a10;color:#fff;
-            border-left-color:var(--red);
-            padding-left:30px;
-        }
+        .nav-dropdown ul li a:hover{background:#ff2a2a10;color:#fff;border-left-color:var(--red);padding-left:30px;}
 
         /* overlay */
         .nav-overlay{display:none;position:fixed;inset:0;z-index:1800;background:rgba(0,0,0,0.35);}
@@ -115,15 +107,79 @@
             font-size:0.88rem;color:#d9c2ca;margin-top:4px;
         }
 
-        /* BLOG */
-        .blog-section{padding:50px 5% 70px;max-width:1300px;margin:0 auto;}
-        .blog-section h2{
-            font-family:'Share Tech Mono',monospace;
-            font-size:clamp(1.3rem,3.5vw,1.9rem);
-            color:#ffdede;border-left:5px solid var(--red);
-            padding-left:16px;margin-bottom:28px;display:flex;align-items:center;gap:12px;
+        /* ======= ABOUT SECTION ======= */
+        .about-section{padding:50px 5% 70px;max-width:900px;margin:0 auto;}
+
+        .sys-label{
+            font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--red);
+            letter-spacing:0.2em;display:flex;align-items:center;gap:10px;margin-bottom:12px;
         }
-        .blog-section h2 i{color:var(--red);font-size:0.9em;}
+        .sys-label::before{content:'[SYS]';opacity:0.6;}
+        .sys-label::after{content:'';flex:1;height:1px;background:rgba(255,42,42,0.35);}
+
+        .about-hero-title{
+            font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.1rem);font-weight:700;
+            color:#fff;line-height:1.15;margin-bottom:12px;
+        }
+        .about-hero-title span{color:var(--red);}
+        .about-hero-sub{
+            font-family:'Share Tech Mono',monospace;font-size:0.78rem;color:#8a6f78;
+            line-height:1.75;max-width:600px;margin-bottom:36px;
+        }
+        .about-hero-sub em{color:#ff8f8f;font-style:normal;}
+
+        .terminal-card{
+            background:#0e0508;border:1px solid rgba(255,42,42,0.22);
+            border-radius:12px;padding:22px 26px;margin-bottom:32px;
+            position:relative;overflow:hidden;
+        }
+        .terminal-card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:1px;
+            background:linear-gradient(90deg,var(--red),transparent 70%);
+        }
+        .tc-header{
+            font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--red);
+            letter-spacing:0.15em;margin-bottom:16px;
+            display:flex;align-items:center;gap:8px;
+        }
+        .tc-header::before{content:'>';}
+        .tc-header .dots{display:flex;gap:5px;margin-left:auto;}
+        .tc-header .dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,42,42,0.3);}
+        .tc-header .dots span:first-child{background:var(--red);}
+        .tc-body{font-family:'Share Tech Mono',monospace;font-size:0.74rem;color:#c4a0ab;line-height:1.8;}
+        .tc-body strong{color:#ffdede;font-weight:400;}
+
+        .what-label{
+            font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--red);
+            letter-spacing:0.18em;margin-bottom:20px;
+            display:flex;align-items:center;gap:10px;
+        }
+        .what-label::before{content:'>';}
+        .what-label::after{content:'';flex:1;height:1px;background:rgba(255,42,42,0.35);}
+
+        .what-list{display:flex;flex-direction:column;gap:18px;margin-bottom:32px;}
+        .what-item{display:flex;align-items:flex-start;gap:16px;}
+        .wi-num{
+            font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--red);
+            min-width:28px;padding-top:2px;opacity:0.7;
+        }
+        .wi-title{font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:#ffdede;letter-spacing:0.08em;margin-bottom:4px;}
+        .wi-desc{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#8a6f78;line-height:1.65;}
+
+        .mission-bar{
+            background:#0e0508;border:1px solid rgba(255,42,42,0.22);border-radius:10px;
+            padding:18px 24px;display:flex;align-items:center;gap:18px;
+            font-family:'Share Tech Mono',monospace;font-size:0.72rem;margin-bottom:16px;
+            flex-wrap:wrap;
+        }
+        .mb-prompt{color:var(--red);white-space:nowrap;}
+        .mb-text{color:#c4a0ab;line-height:1.6;}
+        .mb-text em{color:#ffdede;font-style:normal;}
+
+        .stat-row{display:flex;gap:12px;flex-wrap:wrap;}
+        .stat{flex:1;min-width:100px;padding:14px 16px;text-align:center;border-top:1px solid rgba(255,42,42,0.22);}
+        .stat-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:var(--red);}
+        .stat-lbl{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#8a6f78;margin-top:3px;letter-spacing:0.1em;}
 
         /* CARDS GRID */
         .cards-grid{
@@ -223,6 +279,7 @@
             .card-front .card-title{font-size:0.78rem;}
             .inner-page{padding:70px 4% 50px;}
             .section-header img{max-height:55px;}
+            .mission-bar{flex-direction:column;gap:8px;}
         }
     </style>
 </head>
@@ -233,7 +290,7 @@
 <!-- TOP NAV -->
 <nav class="topnav">
     <div class="topnav-logo">
-        <img src="image/LOGO-removebg-preview.png" alt="NULL HACKERS" ">
+        <img src="image/LOGO-removebg-preview.png" alt="NULL HACKERS">
     </div>
     <button class="topnav-menu-btn" id="menuBtn">
         <i class="fas fa-bars"></i> MENU
@@ -243,7 +300,7 @@
 <!-- NAV OVERLAY -->
 <div class="nav-overlay" id="navOverlay"></div>
 
-<!-- DROPDOWN — slides down from top, scrollable, max half screen -->
+<!-- DROPDOWN -->
 <div class="nav-dropdown" id="navDropdown">
     <ul>
         <li><a href="#" data-page="home"><i class="fas fa-home"></i> Home</a></li>
@@ -269,9 +326,80 @@
         <p class="hero-sub">Offensive mindset | Crimson protocols | Zero-trust</p>
     </div>
 
-    <div class="blog-section" data-aos="fade-up">
-        <h2><img src="image/LCI.png" alt="Network Security" width="300px"></h2>
-        <div class="cards-grid" id="articles-grid"></div>
+    <!-- ===== ABOUT SECTION ===== -->
+    <div class="about-section" data-aos="fade-up">
+        <div class="sys-label">about_us / who_we_are</div>
+
+        <h2 class="about-hero-title">We Are <span>NULL HACKERS</span></h2>
+        <p class="about-hero-sub">
+            A community-driven platform built to <em>spread knowledge</em>, share expertise, and make cybersecurity education <em>open to everyone</em> — beginners, researchers, and professionals alike.
+        </p>
+
+        <div class="terminal-card">
+            <div class="tc-header">
+                mission.txt
+                <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="tc-body">
+                <strong>NULL HACKERS</strong> was founded on a simple belief — <strong>knowledge should have no paywall.</strong><br><br>
+                We are a collective of security researchers, educators, and enthusiasts who document what we learn and share it freely. Whether it's a deep-dive into cryptography, a hands-on malware analysis, or a beginner's guide to networking — <strong>everything here is open.</strong><br><br>
+                Our name isn't about breaking things. It's about <strong>nullifying the barriers</strong> between knowledge and the people who need it.
+            </div>
+        </div>
+
+        <div class="what-label">what_we_do</div>
+        <div class="what-list">
+            <div class="what-item">
+                <span class="wi-num">01</span>
+                <div>
+                    <div class="wi-title">PUBLISH RESEARCH</div>
+                    <div class="wi-desc">We break down complex security topics into clear, practical write-ups anyone can follow and learn from.</div>
+                </div>
+            </div>
+            <div class="what-item">
+                <span class="wi-num">02</span>
+                <div>
+                    <div class="wi-title">SHARE TOOLS & RESOURCES</div>
+                    <div class="wi-desc">Cheat sheets, security tools, books, and certifications — all curated and explained, not just listed.</div>
+                </div>
+            </div>
+            <div class="what-item">
+                <span class="wi-num">03</span>
+                <div>
+                    <div class="wi-title">TEACH & EDUCATE</div>
+                    <div class="wi-desc">From zero to advanced — we cover cryptography, network security, ethical hacking, malware and more.</div>
+                </div>
+            </div>
+            <div class="what-item">
+                <span class="wi-num">04</span>
+                <div>
+                    <div class="wi-title">BUILD A COMMUNITY</div>
+                    <div class="wi-desc">We believe in collective growth. Share your experience, ask questions, and contribute your knowledge.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mission-bar">
+            <span class="mb-prompt">root@nullhackers:~$</span>
+            <span class="mb-text">
+                Our mission: <em>no gatekeeping, no elitism</em> — just real knowledge, shared openly, for anyone willing to learn and grow in cybersecurity.
+            </span>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat">
+                <div class="stat-num">10+</div>
+                <div class="stat-lbl">TOPICS COVERED</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">100%</div>
+                <div class="stat-lbl">FREE CONTENT</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">&#8734;</div>
+                <div class="stat-lbl">KNOWLEDGE TO SHARE</div>
+            </div>
+        </div>
     </div>
 
     <footer class="cyber-footer">
@@ -295,11 +423,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/crypto.png" alt="Cryptography">
-            <!-- <h2>Cryptography</h2> -->
         </div>
         <div class="cards-grid" id="crypto-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -319,11 +446,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/netsec.png" alt="Network Security">
-            <!-- <h2>Network Security</h2> -->
         </div>
         <div class="cards-grid" id="network-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -343,11 +469,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/mal.png" alt="Malware">
-            <!-- <h2>Malware & Threats</h2> -->
         </div>
         <div class="cards-grid" id="malware-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -367,11 +492,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/auth.png" alt="Authentication">
-            <!-- <h2>Authentication</h2> -->
         </div>
         <div class="cards-grid" id="auth-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -391,11 +515,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/ethical.png" alt="Ethical Hacking">
-            <!-- <h2>Ethical Hacking</h2> -->
         </div>
         <div class="cards-grid" id="ethical-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -415,11 +538,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/sectool.png" alt="Security Tools">
-            <!-- <h2>Security Tools</h2> -->
         </div>
         <div class="cards-grid" id="tools-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -439,11 +561,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/books.png" alt="Books">
-            <!-- <h2>Books Library</h2> -->
         </div>
         <div class="cards-grid" id="books-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -463,11 +584,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/chsh.png" alt="Cheat Sheets">
-            <!-- <h2>Cheat Sheets</h2> -->
         </div>
         <div class="cards-grid" id="cheat-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -487,11 +607,10 @@
         <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</div>
         <div class="section-header">
             <img src="image/cert.png" alt="Certifications">
-            <!-- <h2>Certifications</h2> -->
         </div>
         <div class="cards-grid" id="certs-cards"></div>
     </div>
-       <footer class="cyber-footer">
+    <footer class="cyber-footer">
         <img src="image/NULL-HACKERS.png" alt="NULL HACKERS">
         <div class="socials">
             <a href="#"><i class="fab fa-github"></i></a>
@@ -622,17 +741,6 @@ function makeCard(icon,title,descLines,extra,pptTopic,cat){
 }
 
 /* ---- DATA ---- */
-
-// HOME BLOGS
-const articles=[
-    {icon:"fas fa-shield-virus",title:"Ransomware Surge 2025",desc:"New polymorphic variants evade EDR — learn defense strategies."},
-    {icon:"fas fa-eye",title:"AI in Offensive Security",desc:"LLM-driven social engineering and automated payloads on rise."},
-    {icon:"fas fa-database",title:"Cloud Misconfiguration",desc:"S3 leaks & IAM flaws: 80% of breaches involve misconfig."},
-    {icon:"fas fa-chart-line",title:"Zero Trust Architecture",desc:"Implementation challenges & micro-segmentation success."}
-];
-const artGrid=document.getElementById('articles-grid');
-articles.forEach(a=>artGrid.appendChild(makeCard(a.icon,a.title,[a.desc],'',a.title,"CyberIntel")));
-observeGrid('articles-grid');
 
 // CRYPTO
 [{icon:"fas fa-key",title:"AES Encryption",desc:["Symmetric 256-bit, NIST approved.","VPN, Disk encryption."]},
